@@ -1,0 +1,35 @@
+stages:
+  - build_dev
+  - deploy_dev
+  - build_prod
+
+before_script:
+  - docker info
+
+
+build_prod:
+  stage: build_prod
+  only:
+    refs:
+      - master
+  tags:
+    - builder
+  script: []
+
+build_dev:
+  stage: build_dev
+  only:
+    refs:
+      - dev
+  tags:
+    - builder
+  script: []
+
+deploy_dev:
+  stage: deploy_dev
+  only:
+    refs:
+      - dev
+  tags:
+    - dev-sandbox
+  script: []

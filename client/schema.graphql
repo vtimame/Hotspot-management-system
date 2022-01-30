@@ -1,0 +1,488 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+union AuthEntityUnion = Client | User
+
+type AuthPage {
+  backgroundColor: String
+  backgroundImage: String
+  backgroundPosition: String
+  backgroundRepeat: String!
+  backgroundSize: String!
+  bannerImage: String
+  buttonColor: String
+  buttonTextColor: String
+  clientId: Int!
+  createdAt: Date!
+  disabledAt: Date
+  id: ID!
+  logoImage: String
+  termsColor: String
+  textColor: String
+  title: String!
+  updatedAt: Date!
+  zone: Zone
+}
+
+type Client {
+  createdAt: Date!
+  disabledAt: Date
+  id: ID!
+  name: String!
+  updatedAt: Date!
+  zones: [Zone]!
+}
+
+type ClientEmployee {
+  clientId: Int!
+  company: Client!
+  createdAt: Date!
+  disabledAt: Date
+  email: String!
+  id: ID!
+  name: String!
+  patronymic: String!
+  phoneNumber: String!
+  surname: String!
+  updatedAt: Date!
+}
+
+type ClientZone {
+  authLifetime: Int!
+  authPage: AuthPage
+  authPageId: Int
+  authTypes: [String]!
+  clientId: Int!
+  id: ID!
+  interfaceName: String!
+  name: String!
+  sessionLifetime: Int!
+  sessionTimeout: Int!
+}
+
+type ConnectionsStat {
+  count: Int!
+  key: Date!
+}
+
+type Event {
+  context: String!
+  createdAt: Date!
+  entities: EventEntitiesType
+  id: ID!
+  isDebugMessage: Boolean!
+  message: String!
+}
+
+type EventEntitiesType {
+  clientId: Int
+  guestAttemptId: Int
+  guestAuthId: Int
+  guestDeviceId: Int
+  guestSessionId: Int
+  userId: Int
+  zoneId: Int
+  zonePageId: Int
+}
+
+type GuestAuth {
+  deviceId: Int!
+  expiredAt: Date
+  expiresAt: Date!
+  id: ID!
+  login: String!
+  startedAt: Date!
+  zoneId: Int!
+}
+
+type GuestDevice {
+  createdAt: Date!
+  id: ID!
+  mac: String!
+  ua: GuestDeviceInfo
+  userAgent: String!
+}
+
+type GuestDeviceBrowser {
+  name: String
+  version: String
+}
+
+type GuestDeviceCPU {
+  architecture: String
+}
+
+type GuestDeviceEngine {
+  name: String
+  version: String
+}
+
+type GuestDeviceInfo {
+  browser: GuestDeviceBrowser
+  cpu: GuestDeviceCPU
+  device: GuestDeviceVendorInfo
+  engine: GuestDeviceEngine
+  os: GuestDeviceOS
+}
+
+type GuestDeviceOS {
+  name: String
+  version: String
+}
+
+type GuestDeviceVendorInfo {
+  model: String
+  type: String
+  vendor: String
+}
+
+type GuestSession {
+  auth: GuestAuth
+  authId: Int!
+  device: GuestDevice!
+  deviceId: Int!
+  expiredAt: Date
+  expiresAt: Date!
+  id: ID!
+  ip: String!
+  radiusCredentials: RadiusCheck
+  radiusExpiration: RadiusCheck
+  startedAt: Date!
+  zoneId: Int!
+}
+
+type LoginResponse {
+  authEntity: AuthEntityUnion
+  jwt: String
+}
+
+type Mutation {
+  createAuthPage(input: CreateAuthPageInput!): AuthPage!
+  createClient(input: CreateClientInput!): Client!
+  createClientEmployee(input: CreateClientEmployeeInput!): ClientEmployee!
+  createMyAuthPage(input: CreateMyAuthPageInput!): AuthPage!
+  createUser(input: CreateUserInput!): User!
+  createZone(input: CreateZoneInput!): Zone!
+  deleteAuthPage(id: Float!): AuthPage!
+  deleteMyAuthPage(id: Float!): AuthPage!
+  disableClient(id: Float!): Client!
+  disableClientEmployee(id: Float!): ClientEmployee!
+  disableUser(id: Float!): User!
+  disableZone(id: Float!): Zone!
+  dropGuestAuth(id: Float!): String!
+  dropGuestSession(id: Float!): String!
+  generateTestExpiredSessions(input: GenerateTestExpiredSessionsInput!): [GuestSession!]!
+  login(input: LoginInput!): LoginResponse!
+  loginAsClient(id: Float!): LoginResponse!
+  restoreAuthPage(id: Float!): AuthPage!
+  restoreClient(id: Float!): Client!
+  restoreClientEmployee(id: Float!): ClientEmployee!
+  restoreUser(id: Float!): User!
+  restoreZone(id: Float!): Zone!
+  updateAuthPage(id: Float!, input: UpdateAuthPageInput!): AuthPage!
+  updateClient(id: Float!, input: UpdateClientInput!): Client!
+  updateClientEmployee(id: Float!, input: UpdateClientEmployeeInput!): ClientEmployee!
+  updateMyAuthPage(id: Float!, input: UpdateAuthPageInput!): AuthPage!
+  updateUser(id: Float!, input: UpdateUserInput!): User!
+  updateZone(id: Float!, input: UpdateZoneInput!): Zone!
+}
+
+type Query {
+  authClient: ClientEmployee!
+  authClientZones: [ClientZone]!
+  authPage(id: Float!): AuthPage
+  authPages(filter: AuthPageFilter!, input: AuthPagesInput): [AuthPage]!
+  authUser: User!
+  client(id: Float!, input: ClientInput): Client
+  clientEmployees(input: ClientEmployeesInput!): [ClientEmployee]!
+  clients(input: ClientsInput): [Client]!
+  events(filter: EventsInput): [Event!]
+  guestSessions(filter: GuestSessionsInput!): [GuestSession]!
+  myAuthPages: [AuthPage!]
+  myGuestSessions(input: GuestSessionsInput!): [GuestSession!]
+  myStatsOfConnections(filter: MyStatsInput!): [ConnectionsStat]!
+  users(input: UsersInput): [User]!
+  zone(id: Float!, input: ZoneQueryInput!): Zone
+  zones(filter: ZonesFilter, input: ZonesInput): [Zone]!
+}
+
+type RadiusCheck {
+  id: ID!
+  username: String!
+  value: String
+}
+
+type Subscription {
+  authPageAdded: AuthPage!
+  authPageDeleted: AuthPage!
+  authPageRestored: AuthPage!
+  authPageUpdated: AuthPage!
+  clientAdded: Client!
+  clientDisabled: Client!
+  clientRestored: Client!
+  clientUpdated: Client!
+  eventAdded(filter: EventsInput): Event!
+  guestSessionAdded(zoneId: Float!): GuestSession!
+  guestSessionDisabled(zoneId: Float!): GuestSession!
+  userAdded: User!
+  userDisabled: User!
+  userRestored: User!
+  userUpdated: User!
+  zoneAdded: Zone!
+  zoneDisabled: Zone!
+  zoneRestored: Zone!
+  zoneUpdated: Zone!
+}
+
+type User {
+  alias: String!
+  disabledAt: DateTime
+  email: String!
+  id: ID!
+  name: String!
+  phoneNumber: String!
+  sex: Int!
+  surname: String!
+}
+
+type Zone {
+  authLifetime: Int!
+  authPageId: Int
+  authTypes: [String]!
+  client: Client!
+  clientId: Int!
+  createdAt: Date!
+  disabledAt: Date
+  id: ID!
+  interfaceName: String!
+  name: String!
+  redirectLink: String
+  routerIp: String!
+  routerLogin: String!
+  routerPassword: String!
+  sessionLifetime: Int!
+  sessionTimeout: Int!
+  updatedAt: Date!
+}
+
+input AuthPageFilter {
+  clientId: Int!
+}
+
+input AuthPagesInput {
+  skip: Int
+  take: Int
+  withDeleted: Boolean!
+}
+
+input ClientEmployeesInput {
+  clientId: String!
+  withDeleted: Boolean
+}
+
+input ClientInput {
+  withDeleted: Boolean
+}
+
+input ClientsInput {
+  skip: Int
+  take: Int
+  withDeleted: Boolean
+}
+
+input CreateAuthPageInput {
+  backgroundColor: String
+  backgroundImage: String
+  backgroundPosition: String
+  backgroundRepeat: String
+  backgroundSize: String
+  bannerImage: String
+  buttonColor: String
+  buttonTextColor: String
+  clientId: Int!
+  logoImage: String
+  termsColor: String
+  textColor: String
+  title: String!
+}
+
+input CreateClientEmployeeInput {
+  clientId: Int!
+  email: String!
+  name: String!
+  patronymic: String!
+  phoneNumber: String!
+  surname: String!
+}
+
+input CreateClientInput {
+  name: String!
+  password: String
+}
+
+input CreateMyAuthPageInput {
+  backgroundColor: String
+  backgroundImage: String
+  backgroundPosition: String
+  backgroundRepeat: String
+  backgroundSize: String
+  bannerImage: String
+  buttonColor: String
+  buttonTextColor: String
+  logoImage: String
+  termsColor: String
+  textColor: String
+  title: String!
+}
+
+input CreateUserInput {
+  alias: String!
+  email: String!
+  name: String!
+  phoneNumber: String!
+  sex: Int
+  surname: String!
+}
+
+input CreateZoneInput {
+  authLifetime: Int!
+  authPageId: Int
+  authTypes: [String!]
+  clientId: Int!
+  interfaceName: String!
+  name: String!
+  routerIp: String!
+  routerLogin: String!
+  routerPassword: String!
+  sessionLifetime: Int!
+  sessionTimeout: Int!
+}
+
+input CreatedBetween {
+  createdAtFrom: Date!
+  createdAtTo: Date!
+}
+
+input EventEntitiesInput {
+  clientId: Int
+  guestAttemptId: Int
+  guestAuthId: Int
+  guestDeviceId: Int
+  guestSessionId: Int
+  userId: Int
+  zoneId: Int
+  zonePageId: Int
+}
+
+input EventsInput {
+  between: CreatedBetween
+  entities: EventEntitiesInput
+  withoutDebugMessages: Boolean
+}
+
+input GenerateTestExpiredSessionsInput {
+  sessionsCount: Int!
+  zoneId: Int!
+}
+
+input GuestSessionsInput {
+  issuedFrom: Date!
+  issuedTo: Date!
+  withDeleted: Boolean
+  zoneId: Float!
+}
+
+input LoginInput {
+  login: String!
+  password: String
+}
+
+input MyStatsInput {
+  period: String!
+  zoneId: Float!
+}
+
+input UpdateAuthPageInput {
+  backgroundColor: String
+  backgroundImage: String
+  backgroundPosition: String
+  backgroundRepeat: String
+  backgroundSize: String
+  bannerImage: String
+  buttonColor: String
+  buttonTextColor: String
+  clientId: Int
+  logoImage: String
+  termsColor: String
+  textColor: String
+  title: String
+}
+
+input UpdateClientEmployeeInput {
+  clientId: Int
+  email: String
+  name: String
+  patronymic: String
+  phoneNumber: String
+  surname: String
+}
+
+input UpdateClientInput {
+  name: String
+  password: String
+}
+
+input UpdateUserInput {
+  alias: String
+  email: String
+  name: String
+  phoneNumber: String
+  sex: Int
+  surname: String
+}
+
+input UpdateZoneInput {
+  authLifetime: Int
+  authPageId: Int
+  authTypes: [String!]
+  clientId: Int
+  interfaceName: String
+  name: String
+  routerIp: String
+  routerLogin: String
+  routerPassword: String
+  sessionLifetime: Int
+  sessionTimeout: Int
+}
+
+input UsersInput {
+  skip: Int
+  take: Int
+  withDeleted: Boolean
+}
+
+input ZoneQueryInput {
+  withDeleted: Boolean
+}
+
+input ZonesFilter {
+  clientId: Int
+}
+
+input ZonesInput {
+  skip: Int
+  take: Int
+  withDeleted: Boolean
+}
+
+
+"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
+scalar DateTime
+
+"Date custom scalar type"
+scalar Date
